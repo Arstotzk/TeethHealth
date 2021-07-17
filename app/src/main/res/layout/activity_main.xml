@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="210dp"
+        tools:layout_editor_absoluteY="165dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/pick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClickToPick"
+                android:text="Выбор изображения" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Повторное применение фильтров к изображению"
+            android:visibility="gone" />
+
+        <SeekBar
+            android:id="@+id/hMin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="255"
+            tools:visibility="gone" />
+
+        <SeekBar
+            android:id="@+id/sMin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="255"
+            tools:visibility="gone" />
+
+        <SeekBar
+            android:id="@+id/vMin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="255"
+            tools:visibility="gone" />
+
+        <SeekBar
+            android:id="@+id/hMax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="255"
+            tools:visibility="gone" />
+
+        <SeekBar
+            android:id="@+id/sMax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="255"
+            tools:visibility="gone" />
+
+        <SeekBar
+            android:id="@+id/vMax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="255"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvHSV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="tvHSV"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnToTakePhotos"
+                android:layout_width="208dp"
+                android:layout_height="wrap_content"
+                android:onClick="onClickToTakePhotos"
+                android:text="Сделать фото" />
+
+            <Button
+                android:id="@+id/btnToShow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onClickToShow"
+                android:text="Запуск" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/picture" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
