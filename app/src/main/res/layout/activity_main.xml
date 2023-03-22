@@ -94,6 +94,22 @@
             android:layout_height="wrap_content"
             tools:visibility="gone" />
 
+        <Button
+            android:id="@+id/sendImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickToSendImage"
+            android:text="Отправить изображение"
+            tools:visibility="gone" />
+
+        <EditText
+            android:id="@+id/serviceAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textUri"
+            android:text="http://192.168.31.168:5000" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="72dp"

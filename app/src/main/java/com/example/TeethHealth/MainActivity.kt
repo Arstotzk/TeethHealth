@@ -16,6 +16,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
@@ -23,6 +25,7 @@ import org.opencv.android.Utils
 import org.opencv.core.Mat
 import java.io.File
 import java.io.FileNotFoundException
+
 
 class MainActivity : AppCompatActivity() {
     private val PICKER = 1
@@ -45,6 +48,10 @@ class MainActivity : AppCompatActivity() {
     var filterName = arrayOf("Settings", "HSV", "Dilatation", "Erosion", "Teeth", "TeethColor", "Test", "Contur", "Caries", "Gingivitis", "Gingivitis2")
     var filter = 0
     var operationOnImage: Switch? = null
+
+    var serviceAddress: EditText? = null
+    var sendImage: Button? = null
+
     private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
         override fun onManagerConnected(status: Int) {
             when (status) {
@@ -134,6 +141,7 @@ class MainActivity : AppCompatActivity() {
                 when (item) {
                     "Settings" -> {
                         operationOnImage?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.VISIBLE, arrayOf<View?>(serviceAddress, sendImage))
                         VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus))
                         filter = 0
                     }
@@ -187,6 +195,9 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
         spinner.onItemSelectedListener = itemSelectedListener
+
+        serviceAddress = findViewById<View>(R.id.serviceAddress) as EditText?
+        sendImage = findViewById<View>(R.id.sendImage) as Button?
     }
 
     private val seekBarChangeListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
@@ -294,6 +305,11 @@ class MainActivity : AppCompatActivity() {
         pickIntent.type = "image/*"
         pickIntent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(pickIntent, "Select Picture"), PICKER)
+    }
+
+    fun onClickToSendImage(view: View?) {
+        var service = InteractionService(serviceAddress?.text.toString(), applicationContext)
+        service.postImage(bitmap1!!)
     }
 
     companion object {
