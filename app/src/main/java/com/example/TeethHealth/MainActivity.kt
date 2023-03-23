@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -51,6 +52,8 @@ class MainActivity : AppCompatActivity() {
 
     var serviceAddress: EditText? = null
     var sendImage: Button? = null
+    var userName: EditText? = null
+    var isLogIn: Boolean = false
 
     private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
         override fun onManagerConnected(status: Int) {
@@ -198,6 +201,7 @@ class MainActivity : AppCompatActivity() {
 
         serviceAddress = findViewById<View>(R.id.serviceAddress) as EditText?
         sendImage = findViewById<View>(R.id.sendImage) as Button?
+        userName = findViewById(R.id.userName) as EditText?
     }
 
     private val seekBarChangeListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
@@ -308,8 +312,43 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickToSendImage(view: View?) {
-        var service = InteractionService(serviceAddress?.text.toString(), applicationContext)
-        service.postImage(bitmap1!!)
+        if (isLogIn)
+        {
+            val service = InteractionService(serviceAddress?.text.toString(), applicationContext)
+            val idDevice = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID)
+            service.postImage(bitmap1!!, idDevice, userName?.text.toString())
+        }
+        else
+        {
+            Toast.makeText(applicationContext, "Необходимо войти", Toast.LENGTH_LONG).show()
+        }
+    }
+    fun onClickToRegistration(view: View?) {
+        isLogIn = false
+        val service = InteractionService(serviceAddress?.text.toString(), applicationContext)
+        val idDevice = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID)
+        service.getUser(idDevice, userName?.text.toString(), object : VolleyCallBack {
+            override fun onSuccess(isUserExist: Boolean) {
+                var isAlreadyExist = isUserExist
+                if (!isAlreadyExist)
+                    service.postNewUser(idDevice, userName?.text.toString())
+                else
+                    Toast.makeText(applicationContext, "Такой пользователь уже существует", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+    fun onClickToLogIn(view: View?) {
+        val service = InteractionService(serviceAddress?.text.toString(), applicationContext)
+        val idDevice = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID)
+        service.getUser(idDevice, userName?.text.toString(), object : VolleyCallBack {
+            override fun onSuccess(isUserExist: Boolean) {
+                isLogIn = isUserExist
+                if(isLogIn)
+                    Toast.makeText(applicationContext, "Удалось войти", Toast.LENGTH_LONG).show()
+                else
+                    Toast.makeText(applicationContext, "Не удалось войти", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     companion object {

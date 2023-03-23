@@ -114,3 +114,7 @@ open class VolleyMultipartRequest( method: Int,
 }
 
 class FileDataPart(var fileName: String?, var data: ByteArray, var type: String)
+
+interface VolleyCallBack {
+    fun onSuccess(isUserExist: Boolean)
+}

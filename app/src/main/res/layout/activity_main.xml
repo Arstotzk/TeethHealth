@@ -110,6 +110,35 @@
             android:inputType="textUri"
             android:text="http://192.168.31.168:5000" />
 
+        <EditText
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Имя пользователя"
+            android:inputType="textPersonName" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/registration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClickToRegistration"
+                android:text="Зарегистрироваться" />
+
+            <Button
+                android:id="@+id/log_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onClickToLogIn"
+                android:text="Войти" />
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="72dp"
@@ -117,7 +146,7 @@
 
             <Button
                 android:id="@+id/btnToTakePhotos"
-                android:layout_width="208dp"
+                android:layout_width="214dp"
                 android:layout_height="wrap_content"
                 android:onClick="onClickToTakePhotos"
                 android:text="Сделать фото" />
