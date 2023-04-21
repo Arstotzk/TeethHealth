@@ -46,14 +46,17 @@ class MainActivity : AppCompatActivity() {
     var WifiCamWork = false
     var pauseByCam = false
     var disease: Diseases? = null
-    var filterName = arrayOf("Settings", "HSV", "Dilatation", "Erosion", "Teeth", "TeethColor", "Test", "Contur", "Caries", "Gingivitis", "Gingivitis2")
+    var filterName = arrayOf("Service","Settings", "HSV", "Dilatation", "Erosion", "Teeth", "TeethColor", "Test", "Contur", "Caries", "Gingivitis", "Gingivitis2")
     var filter = 0
     var operationOnImage: Switch? = null
+    var filterButtons: LinearLayout? = null
 
-    var serviceAddress: EditText? = null
     var sendImage: Button? = null
-    var userName: EditText? = null
-    var isLogIn: Boolean = false
+
+    var userName: String = ""
+    var serviceAddress: String = ""
+    var idDevice: String = ""
+
 
     private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
         override fun onManagerConnected(status: Int) {
@@ -144,53 +147,68 @@ class MainActivity : AppCompatActivity() {
                 when (item) {
                     "Settings" -> {
                         operationOnImage?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.VISIBLE, arrayOf<View?>(serviceAddress, sendImage))
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus))
+                        filterButtons?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, sendImage))
                         filter = 0
                     }
                     "HSV" -> {
+                        filterButtons?.setVisibility(View.VISIBLE)
                         VisualElements.SetVisibles(View.VISIBLE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV))
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(tvStatus, operationOnImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(tvStatus, operationOnImage, sendImage))
                         filter = 1
                     }
                     "Dilatation" -> {
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage))
+                        filterButtons?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
                         filter = 2
                     }
                     "Erosion" -> {
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage))
+                        filterButtons?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
                         filter = 3
                     }
                     "Teeth" -> {
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage))
+                        filterButtons?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
                         filter = 4
                     }
                     "TeethColor" -> {
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage))
+                        filterButtons?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
                         filter = 5
                     }
                     "Test" -> {
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage))
+                        filterButtons?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
                         filter = 6
                     }
                     "Contur" -> {
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage))
+                        filterButtons?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
                         filter = 7
                     }
                     "Caries" -> {
                         tvStatus?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage))
+                        filterButtons?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage, sendImage))
                         filter = 8
                     }
                     "Gingivitis" -> {
                         tvStatus?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage))
+                        filterButtons?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage, sendImage))
                         filter = 9
                     }
                     "Gingivitis2" -> {
                         tvStatus?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage))
+                        filterButtons?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage, sendImage))
                         filter = 10
+                    }
+                    "Service" -> {
+                        sendImage?.setVisibility(View.VISIBLE)
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, filterButtons))
+                        filter = 11
                     }
                 }
             }
@@ -199,9 +217,13 @@ class MainActivity : AppCompatActivity() {
         }
         spinner.onItemSelectedListener = itemSelectedListener
 
-        serviceAddress = findViewById<View>(R.id.serviceAddress) as EditText?
+        filterButtons = findViewById<View>(R.id.filterButtons) as LinearLayout?
+
         sendImage = findViewById<View>(R.id.sendImage) as Button?
-        userName = findViewById(R.id.userName) as EditText?
+
+        userName = intent.extras!!.getString("userName")!!
+        serviceAddress = intent.extras!!.getString("serviceAddress")!!
+        idDevice = intent.extras!!.getString("idDevice")!!
     }
 
     private val seekBarChangeListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
@@ -284,6 +306,7 @@ class MainActivity : AppCompatActivity() {
                     finalBimap = Diseases.GetBitmap(disease)
                     tvStatus = Diseases.GetTvStatus(disease)
                 }
+                11 -> {}
             }
             picView!!.setImageBitmap(finalBimap)
         }
@@ -312,43 +335,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickToSendImage(view: View?) {
-        if (isLogIn)
-        {
-            val service = InteractionService(serviceAddress?.text.toString(), applicationContext)
-            val idDevice = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID)
-            service.postImage(bitmap1!!, idDevice, userName?.text.toString())
-        }
-        else
-        {
-            Toast.makeText(applicationContext, "Необходимо войти", Toast.LENGTH_LONG).show()
-        }
-    }
-    fun onClickToRegistration(view: View?) {
-        isLogIn = false
-        val service = InteractionService(serviceAddress?.text.toString(), applicationContext)
+        val service = InteractionService(serviceAddress, applicationContext)
         val idDevice = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID)
-        service.getUser(idDevice, userName?.text.toString(), object : VolleyCallBack {
-            override fun onSuccess(isUserExist: Boolean) {
-                var isAlreadyExist = isUserExist
-                if (!isAlreadyExist)
-                    service.postNewUser(idDevice, userName?.text.toString())
-                else
-                    Toast.makeText(applicationContext, "Такой пользователь уже существует", Toast.LENGTH_LONG).show()
-            }
-        })
-    }
-    fun onClickToLogIn(view: View?) {
-        val service = InteractionService(serviceAddress?.text.toString(), applicationContext)
-        val idDevice = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID)
-        service.getUser(idDevice, userName?.text.toString(), object : VolleyCallBack {
-            override fun onSuccess(isUserExist: Boolean) {
-                isLogIn = isUserExist
-                if(isLogIn)
-                    Toast.makeText(applicationContext, "Удалось войти", Toast.LENGTH_LONG).show()
-                else
-                    Toast.makeText(applicationContext, "Не удалось войти", Toast.LENGTH_LONG).show()
-            }
-        })
+        service.postImage(bitmap1!!, idDevice, userName)
     }
 
     companion object {
