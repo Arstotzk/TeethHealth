@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
         isLogIn = false
         val service = InteractionService(serviceAddress?.text.toString(), applicationContext)
         val idDevice = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID)
-        service.getUser(idDevice, userName?.text.toString(), object : VolleyCallBack {
+        service.getUser(idDevice, userName?.text.toString(), object : UserCallBack {
             override fun onSuccess(isUserExist: Boolean) {
                 var isAlreadyExist = isUserExist
                 if (!isAlreadyExist)
@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
     fun onClickToLogIn(view: View?) {
         val service = InteractionService(serviceAddress?.text.toString(), applicationContext)
         val idDevice = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID)
-        service.getUser(idDevice, userName?.text.toString(), object : VolleyCallBack {
+        service.getUser(idDevice, userName?.text.toString(), object : UserCallBack {
             override fun onSuccess(isUserExist: Boolean) {
                 isLogIn = isUserExist
                 if(isLogIn)

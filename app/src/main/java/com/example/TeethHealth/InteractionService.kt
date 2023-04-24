@@ -6,9 +6,11 @@ import android.util.Log
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.UnsupportedEncodingException
@@ -23,7 +25,7 @@ class InteractionService(url: String, _context: Context) {
         serviceUrl = url
         context = _context
     }
-    fun getUser(idDevice: String, name: String, callBack: VolleyCallBack){
+    fun getUser(idDevice: String, name: String, callBack: UserCallBack){
 
         var isUserExist = false
         val queue = Volley.newRequestQueue(context)
@@ -121,6 +123,52 @@ class InteractionService(url: String, _context: Context) {
                 params["idDevice"] = idDevice
                 params["name"] = name
                 return params
+            }
+        }
+
+        queue.add(request)
+    }
+
+    fun getImages(idDevice: String, name: String, callBack: ImagesCallBack)
+    {
+        var jsonArray = JSONObject()
+        val queue = Volley.newRequestQueue(context)
+        var mParams = HashMap<String, String>()
+        mParams["idDevice"] = idDevice
+        mParams["name"] = name
+
+        val request = object : JsonArrayRequest(
+                Request.Method.GET,
+                serviceUrl + "/image/all",
+                null,
+                Response.Listener {response ->
+                    Log.d("InteractionService","response is: $response")
+                    callBack.onSuccess(response)
+                },
+                Response.ErrorListener {error ->
+                    Log.d("InteractionService","error is: $error")
+                }
+        ) {
+            override fun getUrl(): String? {
+                val stringBuilder = StringBuilder(serviceUrl + "/image/all")
+                var i = 1
+                for ((key1, value1) in mParams) {
+                    var key: String
+                    var value: String
+                    try {
+                        key = URLEncoder.encode(key1, "UTF-8")
+                        value = URLEncoder.encode(value1, "UTF-8")
+                        if (i == 1) {
+                            stringBuilder.append("?$key=$value")
+                        } else {
+                            stringBuilder.append("&$key=$value")
+                        }
+                    } catch (e: UnsupportedEncodingException) {
+                        e.printStackTrace()
+                    }
+                    i++
+                }
+                return stringBuilder.toString()
             }
         }
 

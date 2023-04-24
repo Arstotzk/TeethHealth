@@ -2,6 +2,8 @@ package com.example.TeethHealth
 
 import com.android.volley.*
 import com.android.volley.toolbox.HttpHeaderParser
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.*
 import kotlin.math.min
 
@@ -115,6 +117,11 @@ open class VolleyMultipartRequest( method: Int,
 
 class FileDataPart(var fileName: String?, var data: ByteArray, var type: String)
 
-interface VolleyCallBack {
+interface UserCallBack
+{
     fun onSuccess(isUserExist: Boolean)
+}
+interface ImagesCallBack
+{
+    fun onSuccess(jsonArray: JSONArray)
 }

@@ -102,6 +102,13 @@
             android:text="Отправить изображение"
             tools:visibility="gone" />
 
+        <Button
+            android:id="@+id/viewImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickToViewImages"
+            android:text="Просмотр изображений" />
+
         <LinearLayout
             android:id="@+id/filterButtons"
             android:layout_width="match_parent"

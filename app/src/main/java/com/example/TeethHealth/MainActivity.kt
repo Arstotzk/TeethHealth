@@ -351,6 +351,14 @@ class MainActivity : AppCompatActivity() {
         service.postImage(bitmap1!!, idDevice, userName)
     }
 
+    fun onClickToViewImages(view: View?) {
+        val intent = Intent(this@MainActivity, ImagesActivity::class.java)
+        intent.putExtra("userName", userName)
+        intent.putExtra("serviceAddress", serviceAddress)
+        intent.putExtra("idDevice", idDevice)
+        startActivity(intent)
+    }
+
     companion object {
         private const val REQUEST_EXTERNAL_STORAGE = 1
         private val PERMISSIONS_STORAGE = arrayOf(
