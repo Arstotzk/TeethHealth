@@ -48,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
                 {
                     Toast.makeText(applicationContext, "Удалось войти", Toast.LENGTH_LONG).show()
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    intent.putExtra("isLogIn", isLogIn)
                     intent.putExtra("userName", userName?.text.toString())
                     intent.putExtra("serviceAddress", serviceAddress?.text.toString())
                     intent.putExtra("idDevice", Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID))
@@ -57,5 +58,11 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Не удалось войти", Toast.LENGTH_LONG).show()
             }
         })
+    }
+    fun onClickToLogInWithoutService(view: View?)   {
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        isLogIn = false
+        intent.putExtra("isLogIn", isLogIn)
+        startActivity(intent)
     }
 }

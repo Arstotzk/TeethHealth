@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     var WifiCamWork = false
     var pauseByCam = false
     var disease: Diseases? = null
-    var filterName = arrayOf("Service","Settings", "HSV", "Dilatation", "Erosion", "Teeth", "TeethColor", "Test", "Contur", "Caries", "Gingivitis", "Gingivitis2")
+    var filterName = arrayOf("Settings", "Service", "HSV", "Dilatation", "Erosion", "Teeth", "TeethColor", "Test", "Contur", "Caries", "Gingivitis", "Gingivitis2")
     var filter = 0
     var operationOnImage: Switch? = null
     var filterButtons: LinearLayout? = null
@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
     var userName: String = ""
     var serviceAddress: String = ""
     var idDevice: String = ""
+    var isLogIn: Boolean = false
 
 
     private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
@@ -206,9 +207,16 @@ class MainActivity : AppCompatActivity() {
                         filter = 10
                     }
                     "Service" -> {
-                        sendImage?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, filterButtons))
-                        filter = 11
+                        if(isLogIn)
+                        {
+                            sendImage?.setVisibility(View.VISIBLE)
+                            VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, filterButtons))
+                            filter = 11
+                        }
+                        else
+                        {
+                            Toast.makeText(applicationContext, "Для использования функций сервиса - необходимо авторизоваться", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             }
@@ -221,9 +229,12 @@ class MainActivity : AppCompatActivity() {
 
         sendImage = findViewById<View>(R.id.sendImage) as Button?
 
-        userName = intent.extras!!.getString("userName")!!
-        serviceAddress = intent.extras!!.getString("serviceAddress")!!
-        idDevice = intent.extras!!.getString("idDevice")!!
+        isLogIn = intent.extras!!.getBoolean("isLogIn")!!
+        if (isLogIn) {
+            userName = intent.extras!!.getString("userName")!!
+            serviceAddress = intent.extras!!.getString("serviceAddress")!!
+            idDevice = intent.extras!!.getString("idDevice")!!
+        }
     }
 
     private val seekBarChangeListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
