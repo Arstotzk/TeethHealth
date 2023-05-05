@@ -1,9 +1,9 @@
-package com.example.TeethHealth
+package com.example.TeethHealth.Cephalometric
 
+import android.graphics.Bitmap
 import com.android.volley.*
 import com.android.volley.toolbox.HttpHeaderParser
 import org.json.JSONArray
-import org.json.JSONObject
 import java.io.*
 import kotlin.math.min
 
@@ -124,4 +124,8 @@ interface UserCallBack
 interface ImagesCallBack
 {
     fun onSuccess(jsonArray: JSONArray)
+}
+interface ImageCallBack
+{
+    fun onSuccess(bitmap: Bitmap)
 }

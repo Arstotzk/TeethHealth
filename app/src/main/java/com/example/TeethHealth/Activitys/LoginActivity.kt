@@ -1,4 +1,4 @@
-package com.example.TeethHealth
+package com.example.TeethHealth.Activitys
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,10 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.TeethHealth.Service.InteractionService
+import com.example.TeethHealth.R
+import com.example.TeethHealth.Cephalometric.UserCallBack
+import com.example.TeethHealth.Service.Connection
 
 class LoginActivity : AppCompatActivity() {
 
@@ -48,10 +52,9 @@ class LoginActivity : AppCompatActivity() {
                 {
                     Toast.makeText(applicationContext, "Удалось войти", Toast.LENGTH_LONG).show()
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.putExtra("isLogIn", isLogIn)
-                    intent.putExtra("userName", userName?.text.toString())
-                    intent.putExtra("serviceAddress", serviceAddress?.text.toString())
-                    intent.putExtra("idDevice", Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID))
+                    val connection = Connection(isLogIn, userName?.text.toString(), serviceAddress?.text.toString(),
+                            Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID))
+                    intent.putExtra("connection", connection)
                     startActivity(intent)
                 }
                 else
@@ -61,8 +64,8 @@ class LoginActivity : AppCompatActivity() {
     }
     fun onClickToLogInWithoutService(view: View?)   {
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
-        isLogIn = false
-        intent.putExtra("isLogIn", isLogIn)
+        val connection = Connection(isLogIn)
+        intent.putExtra("connection", connection)
         startActivity(intent)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.TeethHealth
+package com.example.TeethHealth.Activitys
 
 import android.Manifest
 import android.app.Activity
@@ -17,8 +17,12 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import com.example.TeethHealth.*
+import com.example.TeethHealth.ImageFilters.Diseases
+import com.example.TeethHealth.ImageFilters.FunctionsImage
+import com.example.TeethHealth.ImageFilters.VisualElements
+import com.example.TeethHealth.Service.Connection
+import com.example.TeethHealth.Service.InteractionService
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
@@ -53,10 +57,7 @@ class MainActivity : AppCompatActivity() {
 
     var sendImage: Button? = null
 
-    var userName: String = ""
-    var serviceAddress: String = ""
-    var idDevice: String = ""
-    var isLogIn: Boolean = false
+    var connection: Connection = Connection(false)
 
 
     private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
@@ -207,7 +208,7 @@ class MainActivity : AppCompatActivity() {
                         filter = 10
                     }
                     "Service" -> {
-                        if(isLogIn)
+                        if(connection.isLogIn)
                         {
                             sendImage?.setVisibility(View.VISIBLE)
                             VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, filterButtons))
@@ -229,12 +230,7 @@ class MainActivity : AppCompatActivity() {
 
         sendImage = findViewById<View>(R.id.sendImage) as Button?
 
-        isLogIn = intent.extras!!.getBoolean("isLogIn")!!
-        if (isLogIn) {
-            userName = intent.extras!!.getString("userName")!!
-            serviceAddress = intent.extras!!.getString("serviceAddress")!!
-            idDevice = intent.extras!!.getString("idDevice")!!
-        }
+        connection = intent.getSerializableExtra("connection") as Connection
     }
 
     private val seekBarChangeListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
@@ -346,16 +342,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickToSendImage(view: View?) {
-        val service = InteractionService(serviceAddress, applicationContext)
+        val service = InteractionService(connection.serviceAddress!!, applicationContext)
         val idDevice = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID)
-        service.postImage(bitmap1!!, idDevice, userName)
+        service.postImage(bitmap1!!, idDevice, connection.userName!!)
     }
 
     fun onClickToViewImages(view: View?) {
         val intent = Intent(this@MainActivity, ImagesActivity::class.java)
-        intent.putExtra("userName", userName)
-        intent.putExtra("serviceAddress", serviceAddress)
-        intent.putExtra("idDevice", idDevice)
+        intent.putExtra("connection", connection)
         startActivity(intent)
     }
 

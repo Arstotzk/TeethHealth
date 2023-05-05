@@ -1,4 +1,4 @@
-package com.example.TeethHealth
+package com.example.TeethHealth.ImageFilters
 
 import android.graphics.Bitmap
 import android.widget.TextView

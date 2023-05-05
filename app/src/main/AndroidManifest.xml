@@ -13,10 +13,10 @@
         android:theme="@style/Theme.TestPic3"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.example.TeethHealth.MainActivity"
+        <activity android:name="com.example.TeethHealth.Activitys.MainActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".LoginActivity"
+        <activity android:name=".Activitys.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,9 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ImagesActivity"
+        <activity android:name=".Activitys.ImagesActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".Activitys.ImageActivity" />
     </application>
 
 </manifest>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.example.TeethHealth.Cephalometric.ZoomLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/zoom_layout">
+                <FrameLayout
+                    android:id="@+id/container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="1200px"
+                        app:srcCompat="@drawable/devide" />
+                </FrameLayout>
+            </com.example.TeethHealth.Cephalometric.ZoomLayout>
+
+            <TextView
+                android:id="@+id/imageData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/imageStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <Button
+                android:id="@+id/updatePoints"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onClickToUpdatePoints"
+                android:text="Обновить точки и пересчитать параметры" />
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
