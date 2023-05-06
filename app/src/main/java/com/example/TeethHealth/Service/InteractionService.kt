@@ -272,6 +272,53 @@ class InteractionService(url: String, _context: Context) {
         queue.add(request)
     }
 
+    fun getParams(idDevice: String, name: String, imageGuid: UUID, callBack: ImagesCallBack)
+    {
+        var jsonArray = JSONObject()
+        val queue = Volley.newRequestQueue(context)
+        var mParams = HashMap<String, String>()
+        mParams["idDevice"] = idDevice
+        mParams["name"] = name
+        mParams["imageGuid"] = imageGuid.toString()
+
+        val request = object : JsonArrayRequest(
+                Request.Method.GET,
+                serviceUrl + "/image/params",
+                null,
+                Response.Listener {response ->
+                    Log.d("InteractionService","response is: $response")
+                    callBack.onSuccess(response)
+                },
+                Response.ErrorListener {error ->
+                    Log.d("InteractionService","error is: $error")
+                }
+        ) {
+            override fun getUrl(): String? {
+                val stringBuilder = StringBuilder(serviceUrl + "/image/params")
+                var i = 1
+                for ((key1, value1) in mParams) {
+                    var key: String
+                    var value: String
+                    try {
+                        key = URLEncoder.encode(key1, "UTF-8")
+                        value = URLEncoder.encode(value1, "UTF-8")
+                        if (i == 1) {
+                            stringBuilder.append("?$key=$value")
+                        } else {
+                            stringBuilder.append("&$key=$value")
+                        }
+                    } catch (e: UnsupportedEncodingException) {
+                        e.printStackTrace()
+                    }
+                    i++
+                }
+                return stringBuilder.toString()
+            }
+        }
+
+        queue.add(request)
+    }
+
     fun postPoint(idDevice: String, name: String, point: Point){
 
         val queue = Volley.newRequestQueue(context)
@@ -304,8 +351,6 @@ class InteractionService(url: String, _context: Context) {
 
         queue.add(request)
     }
-
-
     fun postFindParams(idDevice: String, name: String, imageGuid: UUID){
 
         val queue = Volley.newRequestQueue(context)
@@ -331,54 +376,6 @@ class InteractionService(url: String, _context: Context) {
                 params["name"] = name
                 params["imageGuid"] = imageGuid.toString()
                 return params
-            }
-        }
-
-        queue.add(request)
-    }
-
-    //Temp
-    fun getImage2(idDevice: String, name: String, imageGuid: UUID, callBack: ImagesCallBack)
-    {
-        var jsonArray = JSONObject()
-        val queue = Volley.newRequestQueue(context)
-        var mParams = HashMap<String, String>()
-        mParams["idDevice"] = idDevice
-        mParams["name"] = name
-        mParams["imageGuid"] = imageGuid.toString()
-
-        val request = object : JsonArrayRequest(
-                Request.Method.GET,
-                serviceUrl + "/image",
-                null,
-                Response.Listener {response ->
-                    Log.d("InteractionService","response is: $response")
-                    callBack.onSuccess(response)
-                },
-                Response.ErrorListener {error ->
-                    Log.d("InteractionService","error is: $error")
-                }
-        ) {
-            override fun getUrl(): String? {
-                val stringBuilder = StringBuilder(serviceUrl + "/image")
-                var i = 1
-                for ((key1, value1) in mParams) {
-                    var key: String
-                    var value: String
-                    try {
-                        key = URLEncoder.encode(key1, "UTF-8")
-                        value = URLEncoder.encode(value1, "UTF-8")
-                        if (i == 1) {
-                            stringBuilder.append("?$key=$value")
-                        } else {
-                            stringBuilder.append("&$key=$value")
-                        }
-                    } catch (e: UnsupportedEncodingException) {
-                        e.printStackTrace()
-                    }
-                    i++
-                }
-                return stringBuilder.toString()
             }
         }
 

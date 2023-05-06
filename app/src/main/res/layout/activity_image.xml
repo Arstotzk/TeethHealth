@@ -22,19 +22,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+                    <RelativeLayout
+                        android:id="@+id/loadingPanel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center" >
+
+                        <ProgressBar
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:indeterminate="true" />
+                    </RelativeLayout>
+
                     <ImageView
                         android:id="@+id/imageView"
                         android:layout_width="match_parent"
-                        android:layout_height="1200px"
-                        app:srcCompat="@drawable/devide" />
+                        android:layout_height="1200px" />
                 </FrameLayout>
             </com.example.TeethHealth.Cephalometric.ZoomLayout>
-
-            <TextView
-                android:id="@+id/imageData"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
 
             <TextView
                 android:id="@+id/imageStatus"
@@ -42,12 +47,32 @@
                 android:layout_height="wrap_content"
                 android:text="TextView" />
 
+            <TextView
+                android:id="@+id/imageDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <LinearLayout
+                android:id="@+id/linearParams"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/imageParams"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Параметры:" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/updatePoints"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="onClickToUpdatePoints"
                 android:text="Обновить точки и пересчитать параметры" />
+
         </LinearLayout>
     </ScrollView>
 

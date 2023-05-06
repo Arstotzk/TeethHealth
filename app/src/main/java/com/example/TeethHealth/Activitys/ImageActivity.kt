@@ -10,10 +10,11 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.example.TeethHealth.Cephalometric.ImageCallBack
 import com.example.TeethHealth.Cephalometric.ImageToShow
 import com.example.TeethHealth.Cephalometric.ImagesCallBack
@@ -31,6 +32,10 @@ class ImageActivity : AppCompatActivity() {
     var connection: Connection = Connection(false)
     var imageToShow: ImageToShow? = null
     private var container: FrameLayout? = null
+    private var paramsContainer: FrameLayout? = null
+    private var linearParams: LinearLayout? = null
+    private var dateTV: TextView? = null
+    private var statusTV: TextView? = null
     private var xDelta:Int = 0
     private var yDelta:Int = 0
     var resizeCoef: Float = 1F
@@ -42,6 +47,7 @@ class ImageActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image)
@@ -54,20 +60,24 @@ class ImageActivity : AppCompatActivity() {
         zoomView = findViewById(R.id.zoom_layout) as ZoomLayout
 
         container = findViewById(R.id.container) as FrameLayout
+        linearParams = findViewById(R.id.linearParams) as LinearLayout
+
+        dateTV = findViewById(R.id.imageDate) as TextView
+        statusTV = findViewById(R.id.imageStatus) as TextView
+        var loadingPanel = findViewById(R.id.loadingPanel) as RelativeLayout
         //myZoomView!!.addView(container)
+
+        dateTV!!.text = "Дата: " + imageToShow!!.GetDateString()
+        statusTV!!.text = "Статус: " + GetRuStatus(imageToShow!!.status)
 
         val service = InteractionService(connection.serviceAddress!!, applicationContext)
         service.getImage(connection.idDevice!!, connection.userName!!, imageToShow!!.guid, object : ImageCallBack {
             override fun onSuccess(bitmap: Bitmap) {
                 Log.d("ImageActivity bitmap", bitmap.toString())
-                //imageView.setImageBitmap(bitmap)
-                val mutableBitmap: Bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-                val canvas = Canvas(mutableBitmap)
-                val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-                paint.setColor(Color.GREEN)
-                canvas.drawCircle(50F, 50F, 10F, paint)
-                iv.setImageBitmap(mutableBitmap)
+                var loadingPanel = findViewById(R.id.loadingPanel) as RelativeLayout
+                loadingPanel.setVisibility(View.GONE)
 
+                iv.setImageBitmap(bitmap)
                 val displayMetrics = DisplayMetrics()
                 windowManager.defaultDisplay.getMetrics(displayMetrics)
 
@@ -88,8 +98,6 @@ class ImageActivity : AppCompatActivity() {
                     service.getPoints(connection.idDevice!!, connection.userName!!, imageToShow!!.guid, object : ImagesCallBack {
                         @RequiresApi(Build.VERSION_CODES.O)
                         override fun onSuccess(pointsJSON: JSONArray) {
-                            var imagesToShow = mutableListOf<ImageToShow>()
-                            var statuses = mutableListOf<String>()
                             for (num in 0 until pointsJSON.length()) {
                                 val pointJSON = pointsJSON.getJSONArray(num)
                                 val x = pointJSON[0]
@@ -108,6 +116,20 @@ class ImageActivity : AppCompatActivity() {
 
                                 AddPoint(point)
 
+                            }
+                        }
+                    })
+                    service.getParams(connection.idDevice!!, connection.userName!!, imageToShow!!.guid, object : ImagesCallBack {
+                        @RequiresApi(Build.VERSION_CODES.O)
+                        override fun onSuccess(paramsJSON: JSONArray) {
+                            for (num in 0 until paramsJSON.length()) {
+                                val paramJSON = paramsJSON.getJSONArray(num)
+                                val name = paramJSON[0]
+                                val value = paramJSON[1] as Double
+                                val min = paramJSON[2] as Double
+                                val max = paramJSON[3] as Double
+
+                                AddParam(name.toString(), value, min, max)
                             }
                         }
                     })
@@ -133,7 +155,6 @@ class ImageActivity : AppCompatActivity() {
             val service = InteractionService(connection.serviceAddress!!, applicationContext)
             service.postFindParams(connection.idDevice!!, connection.userName!!, imageToShow!!.guid)
         }
-        //AddPoint(100,100, "t")
     }
     fun AddPoint(point: Point){
         val imageView = ImageView(this@ImageActivity)
@@ -153,6 +174,28 @@ class ImageActivity : AppCompatActivity() {
 
         container!!.addView(imageView)
         container!!.addView(textView)
+    }
+    fun AddParam(name: String, value: Double, min: Double, max: Double)
+    {
+        val textView = TextView(this@ImageActivity)
+        val valueRounded = Math.round(value * 100) / 100
+        textView.text = "$name: $valueRounded"
+        textView.textSize = 16f
+        if (value > max || value < min)
+            textView.setTextColor(Color.RED)
+        else
+            textView.setTextColor(Color.BLACK)
+        linearParams!!.addView(textView)
+    }
+
+    fun GetRuStatus(statusCode: String): String
+    {
+        when(statusCode)
+        {
+            "complete" -> return "Обработка завершена"
+            "processing" -> return "На обработке"
+        }
+        return "Неизвестный статус"
     }
 
     @SuppressLint("ClickableViewAccessibility")
