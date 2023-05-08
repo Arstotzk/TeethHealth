@@ -40,6 +40,9 @@ class LoginActivity : AppCompatActivity() {
                 else
                     Toast.makeText(applicationContext, "Такой пользователь уже существует", Toast.LENGTH_LONG).show()
             }
+            override fun onError(error: String) {
+                Toast.makeText(applicationContext, "Не удалось создать пользователя, ошибка: $error", Toast.LENGTH_LONG).show()
+            }
         })
     }
     fun onClickToLogIn(view: View?) {
@@ -50,7 +53,6 @@ class LoginActivity : AppCompatActivity() {
                 isLogIn = isUserExist
                 if(isLogIn)
                 {
-                    Toast.makeText(applicationContext, "Удалось войти", Toast.LENGTH_LONG).show()
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     val connection = Connection(isLogIn, userName?.text.toString(), serviceAddress?.text.toString(),
                             Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID))
@@ -58,7 +60,11 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 else
-                    Toast.makeText(applicationContext, "Не удалось войти", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Не удалось войти, проверьте логин", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onError(error: String) {
+                Toast.makeText(applicationContext, "Не удалось войти, ошибка: $error", Toast.LENGTH_LONG).show()
             }
         })
     }

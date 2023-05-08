@@ -50,6 +50,7 @@ class InteractionService(url: String, _context: Context) {
                 },
                 Response.ErrorListener {error ->
                     Log.d("InteractionService","error is: $error")
+                    callBack.onError(error.toString())
                 }
         ) {
             override fun getUrl(): String? {

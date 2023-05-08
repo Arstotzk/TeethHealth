@@ -120,6 +120,8 @@ class FileDataPart(var fileName: String?, var data: ByteArray, var type: String)
 interface UserCallBack
 {
     fun onSuccess(isUserExist: Boolean)
+
+    fun onError(error: String)
 }
 interface ImagesCallBack
 {

@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
     var filterButtons: LinearLayout? = null
 
     var sendImage: Button? = null
+    var viewImage: Button? = null
 
     var connection: Connection = Connection(false)
 
@@ -150,67 +151,68 @@ class MainActivity : AppCompatActivity() {
                     "Settings" -> {
                         operationOnImage?.setVisibility(View.VISIBLE)
                         filterButtons?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, sendImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, sendImage, viewImage))
                         filter = 0
                     }
                     "HSV" -> {
                         filterButtons?.setVisibility(View.VISIBLE)
                         VisualElements.SetVisibles(View.VISIBLE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV))
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(tvStatus, operationOnImage, sendImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(tvStatus, operationOnImage, sendImage, viewImage))
                         filter = 1
                     }
                     "Dilatation" -> {
                         filterButtons?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage, viewImage))
                         filter = 2
                     }
                     "Erosion" -> {
                         filterButtons?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage, viewImage))
                         filter = 3
                     }
                     "Teeth" -> {
                         filterButtons?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage, viewImage))
                         filter = 4
                     }
                     "TeethColor" -> {
                         filterButtons?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage, viewImage))
                         filter = 5
                     }
                     "Test" -> {
                         filterButtons?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage, viewImage))
                         filter = 6
                     }
                     "Contur" -> {
                         filterButtons?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, sendImage, viewImage))
                         filter = 7
                     }
                     "Caries" -> {
                         tvStatus?.setVisibility(View.VISIBLE)
                         filterButtons?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage, sendImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage, sendImage, viewImage))
                         filter = 8
                     }
                     "Gingivitis" -> {
                         tvStatus?.setVisibility(View.VISIBLE)
                         filterButtons?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage, sendImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage, sendImage, viewImage))
                         filter = 9
                     }
                     "Gingivitis2" -> {
                         tvStatus?.setVisibility(View.VISIBLE)
                         filterButtons?.setVisibility(View.VISIBLE)
-                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage, sendImage))
+                        VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, operationOnImage, sendImage, viewImage))
                         filter = 10
                     }
                     "Service" -> {
                         if(connection.isLogIn)
                         {
                             sendImage?.setVisibility(View.VISIBLE)
+                            viewImage?.setVisibility(View.VISIBLE)
                             VisualElements.SetVisibles(View.GONE, arrayOf<View?>(hMin, sMin, vMin, hMax, sMax, vMax, tvHSV, tvStatus, operationOnImage, filterButtons))
                             filter = 11
                         }
@@ -229,6 +231,7 @@ class MainActivity : AppCompatActivity() {
         filterButtons = findViewById<View>(R.id.filterButtons) as LinearLayout?
 
         sendImage = findViewById<View>(R.id.sendImage) as Button?
+        viewImage = findViewById(R.id.viewImages) as Button?
 
         connection = intent.getSerializableExtra("connection") as Connection
     }
